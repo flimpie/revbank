@@ -77,7 +77,7 @@ sub update($username, $delta, $transaction_id) {
         my @a = split " ", $line;
         if (lc $a[0] eq lc $account) {
             $old = SpaceTab::Amount->parse_string($a[1]);
-            die "Fatal error: invalid balance in spacetab.accounts:$.\n"
+            die "Fatal error: invalid balance in data/accounts:$.\n"
                 if not defined $old;
 
             $new = $old + $delta;

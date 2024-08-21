@@ -33,7 +33,7 @@ sub hook_checkout($class, $cart, $user, $transaction_id, @) {
 sub list($self) {
     my $list = join "", grep {
 	/ -/ && !/^[-+]/
-    } slurp("spacetab.accounts");
+    } slurp("data/accounts");
 
     $list =~ s/( -[\\d.]+)/\\e[31;1m\$1\\e[0m/g;
     print $list;
@@ -46,7 +46,7 @@ sub shame($self) {
         (split " ", $a)[1] <=> (split " ", $b)[1]
     } grep {
         / -/ && !/^[-+]/
-    } slurp("spacetab.accounts");
+    } slurp("data/accounts");
 
     $list =~ s/( -[\d.]+)/\e[31;1m$1\e[0m/g;
     print $list;

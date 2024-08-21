@@ -1,3 +1,7 @@
+# SpaceTab 6.3.1
+
+* Hotfix because I cocked up some `data/` references in plugins (forgot to replace them)
+
 # SpaceTab 6.3.0
 
 * Hard fork based off of RevBank v6.2.0.
