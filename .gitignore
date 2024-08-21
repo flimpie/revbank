@@ -6,3 +6,5 @@ spacetab.accounts
 spacetab.market
 spacetab.products
 .spacetab.global-lock
+
+plugins/overlay/*

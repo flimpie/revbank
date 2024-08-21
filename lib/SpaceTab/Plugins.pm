@@ -54,10 +54,17 @@ sub load($class) {
 
     for my $name (@config) {
         my $fn = "plugins/$name";
+        my $overlay_fn = "plugins/overlay/$name"; 
+        # "overlaying" plugins to make developing/scratching/bodging easier
+
         my $package = "SpaceTab::Plugin::$name";
-        if (not -e $fn) {
-            warn "$fn does not exist; skipping plugin.\n";
-            next;
+        if (not -e $overlay_fn) {
+            if (not -e $fn) {
+                warn "$fn does not exist; skipping plugin.\n";
+                next;
+            }
+        } else {
+            $fn = $overlay_fn;
         }
         SpaceTab::Eval::clean_eval(qq[
             use strict;

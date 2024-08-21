@@ -71,26 +71,27 @@ local laws or external accounting software.)
 
 ### Other configuration
 
-- `revbank.plugins`: enable or disable plugins here.
-- `revbank.accounts`: if you're migrating from another system, you can add the
+- `spacetab.plugins`: enable or disable plugins here.
+  You can overwrite plugins by creating a plugin of the same name
+  in `plugins/overlay/`. That will be loaded instead.
+- `spacetab.accounts`: if you're migrating from another system, you can add the
   existing account balances here. Only the first two columns are mandatory
-  (account name and balance). Editing the accounts file when revbank is in
+  (account name and balance). Editing the accounts file when SpaceTab is in
   active use is not recommended because you might overwrite the effect of the
   latest transactions, but you can maybe get away with it if you're fast
   enough.
-- `revbank.products`: list your products here; the first column is a comma
+- `spacetab.products`: list your products here; the first column is a comma
   separated (no space after the comma!) list of product codes. Only the
   description makes it into the logs so make it sufficiently unique.
 - `plugins/deposit_methods`: if you want to enable this plugin (which is highly
   recommended!), at least change the bank account number. When customizing
-  plugins, you can either copy the file and use your own, or edit the existing
-  file and deal with merge conflicts later. Either way you'll have to pay
+  plugins, you should copy the file into `plugins/overlay/`. You should pay
   attention to changes when upgrading.
 
-After changing `revbank.plugins` or any of the actual plugin files, you'll need
-to restart `revbank`. The easiest way to do that is ctrl+D. No restart is
-required after editing `revbank.products`, `revbank.market`, or
-`revbank.accounts`.
+After changing `spacetab.plugins` or any of the actual plugin files, you'll need
+to restart `spacetab`. The easiest way to do that is ctrl+D. No restart is
+required after editing `spacetab.products`, `spacetab.market`, or
+`spacetab.accounts`.
 
 If your terminal is unable to beep, e.g. if it's Linux console on a Raspberry
 Pi, copy the `beep_terminal` plugin to a new file, and figure out another way
