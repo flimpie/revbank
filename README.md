@@ -1,4 +1,6 @@
-# revbank - Banking for hackerspace visitors
+# spacetab - Banking for hackerspace visitors
+
+`spacetab` is a fork of [RevBank](https://github.com/revspace/revbank).
 
 ## Using RevBank (for end users)
 

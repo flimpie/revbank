@@ -31,15 +31,15 @@ sub hook_checkout($class, $cart, $user, $transaction_id, @) {
 }
 
 sub list($self) {
-    require RevBank::TextEditor;
+    require SpaceTab::TextEditor;
 
     my $list = join "", sort {
         lc($a) cmp lc($b)
     } grep {
         !/^[-+]/
-    } slurp("revbank.accounts");
+    } slurp("spacetab.accounts");
 
-    RevBank::TextEditor::pager("RevBank account list", $list);
+    SpaceTab::TextEditor::pager("SpaceTab account list", $list);
     return ACCEPT;
 }
 
@@ -48,7 +48,7 @@ sub shame($self) {
         (split " ", $a)[1] <=> (split " ", $b)[1]
     } grep {
         / -/ && !/^[-+]/
-    } slurp("revbank.accounts");
+    } slurp("spacetab.accounts");
 
     $list =~ s/( -[\d.]+)/\e[31;1m$1\e[0m/g;
     print $list;
@@ -58,7 +58,7 @@ sub shame($self) {
 sub _grep($user) {
     $user = lc $user;
     my @lines;
-    open my $fh, "<", ".revbank.log" or die $!;
+    open my $fh, "<", ".spacetab.log" or die $!;
 
     while (defined($_ = readline $fh)) {
         length($_) > 28 or next;
@@ -85,8 +85,8 @@ sub log_for :Tab(USERS) ($self, $cart, $input, @) {
     my $user = parse_user($input) or return REJECT, "Unknown user";
     my @lines = _grep($user);
 
-    require RevBank::TextEditor;
-    RevBank::TextEditor::logpager("RevBank log for $user", join("", @lines, "(end)"));
+    require SpaceTab::TextEditor;
+    SpaceTab::TextEditor::logpager("SpaceTab log for $user", join("", @lines, "(end)"));
     return ACCEPT;
 }
 
@@ -99,7 +99,7 @@ sub _recent($n, $u) {
 sub balance($self, $u) {
     _recent(10, $u);
     call_hooks("user_info", $u);
-    my $balance = RevBank::Users::balance($u);
+    my $balance = SpaceTab::Users::balance($u);
     my $red = $balance->cents < 0 ? "31;" : "";
     printf "Balance for $u is \e[%s1m%s\e[0m\n", $red, $balance->string("+");
     say "NB: Products/amounts/commands FIRST, username LAST.";

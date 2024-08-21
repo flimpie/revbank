@@ -5,7 +5,7 @@ use List::Util;
 HELP void => "Destroy deposit tokens";
 
 my $ttl = 100 * 86400;  # expiry time in seconds
-my $filename = "revbank.statiegeld";
+my $filename = "spacetab.statiegeld";
 
 # Token format: token_type,time,expiry_time,product_id,transaction_id,seq
 # - token_type (also just "type") is the id of the product addon.
@@ -20,7 +20,7 @@ my $filename = "revbank.statiegeld";
 # in their possession.
 
 sub _addon_accounts {
-	my @accounts = @RevBank::Plugin::statiegeld::addon_accounts
+	my @accounts = @SpaceTab::Plugin::statiegeld::addon_accounts
 		or die "statiegeld_tokens plugin requires statiegeld plugin";
 	return @accounts;
 }
@@ -170,7 +170,7 @@ sub hook_checkout_prepare($class, $cart, $username, $transaction_id, @) {
 	# Products bought: add tokens
 	my $seq = 0;
 	for my $entry ($cart->entries('product')) {
-		my $sg = RevBank::Plugin::statiegeld::statiegeld_product($entry->attribute('product'))
+		my $sg = SpaceTab::Plugin::statiegeld::statiegeld_product($entry->attribute('product'))
 			or next;
 
 		for my $addon (@{ $sg->{statiegeld_addons} }) {
@@ -220,7 +220,7 @@ sub hook_checkout_prepare($class, $cart, $username, $transaction_id, @) {
 		$tokens_changed++;
 	}
 	for my $type (keys %warnings_by_type) {
-		my $products = RevBank::Plugin::products::read_products();
+		my $products = SpaceTab::Plugin::products::read_products();
 		my $addon = $products->{"+$type"} // $products->{$type};
 		my $avail = $had_num_tokens_by_type{$type} // 0;
 		my $only =

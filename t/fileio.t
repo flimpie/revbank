@@ -4,10 +4,10 @@
 use Test::More;
 use File::Temp;
 
-use RevBank::FileIO;
+use SpaceTab::FileIO;
 
 # ChatGPT didn't realise that ::FileIO doesn't export its functions
-use RevBank::Global;
+use SpaceTab::Global;
 
 subtest "slurp" => sub {
     my $tmp = File::Temp->new();

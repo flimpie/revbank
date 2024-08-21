@@ -1,7 +1,7 @@
 #!perl
 
 
-HELP "restart" => "Attempt to restart the RevBank shell";
+HELP "restart" => "Attempt to restart the SpaceTab shell";
 
 sub command :Tab(restart) ($self, $cart, $command, @) {
     return NEXT if $command ne 'restart';
@@ -11,5 +11,5 @@ sub command :Tab(restart) ($self, $cart, $command, @) {
     exec $0;
     call_hooks("restart_survived");
 
-    return ABORT, "exec() failed. You'll have to restart revbank yourself :P";
+    return ABORT, "exec() failed. You'll have to restart spacetab yourself :P";
 }

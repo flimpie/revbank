@@ -6,7 +6,7 @@ sub command :Tab(tail) ($self, $cart, $command, @) {
     my $n = (`tput lines 2>/dev/null` || 13) - 3;
     my $c = (`tput cols 2>/dev/null` || 80) + 0;
 
-    open my $fh, "<", ".revbank.log" or die $!;
+    open my $fh, "<", ".spacetab.log" or die $!;
     my @lines;
 
     while (defined($_ = readline $fh)) {
@@ -15,7 +15,7 @@ sub command :Tab(tail) ($self, $cart, $command, @) {
 
         my ($dt, $c, $t_id, $u, $dir, $qty, $amount, undef, $desc) = split " ", $_, 9;
         $c eq 'CHECKOUT' or next;  # real check after expensive split
-        RevBank::Users::is_hidden($u) and next;
+        SpaceTab::Users::is_hidden($u) and next;
 
         shift @lines if @lines == $n;
 

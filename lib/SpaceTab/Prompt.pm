@@ -1,4 +1,4 @@
-package RevBank::Prompt;
+package SpaceTab::Prompt;
 
 use v5.32;
 use warnings;
@@ -9,7 +9,7 @@ use List::Util qw(uniq);
 use Term::ReadLine;
 require Term::ReadLine::Gnu;  # The other one sucks.
 
-use RevBank::Global;
+use SpaceTab::Global;
 
 my %escapes = (a => "\a", r => "\r", n => "\n", t => "\t", 0 => "\0");
 my %unescapes = reverse %escapes;

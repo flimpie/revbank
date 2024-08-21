@@ -16,7 +16,7 @@ sub arg :Tab(USERS) ($self, $cart, $arg, @) {
     my $amount = parse_amount($arg);
 
     if (@users and $amount) {
-        my $each  = RevBank::Amount->new_from_float($amount->float / @users);
+        my $each  = SpaceTab::Amount->new_from_float($amount->float / @users);
         my $total = $each * @users;
 
         if ($total != $amount) {

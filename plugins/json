@@ -21,7 +21,7 @@ RETRY instead of REJECT.
 Note that this plugin will always be highly experimental; re-evaluate your
 assumptions when upgrading. :)
 
-This plugin is intended to be used together with "revbank -c 'command line'",
+This plugin is intended to be used together with "spacetab -c 'command line'",
 but you could try to use it interactively; if you do, please let me know about
 your use case.
 
@@ -54,7 +54,7 @@ BEGIN {
         END { print STDOUT "\n]\n" if $array }
 
         # Monkey patch
-        *RevBank::Amount::TO_JSON = sub($self, @) {
+        *SpaceTab::Amount::TO_JSON = sub($self, @) {
             $self->string("+");
         };
     } else {

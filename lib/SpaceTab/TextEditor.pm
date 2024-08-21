@@ -1,11 +1,11 @@
-package RevBank::TextEditor;
+package SpaceTab::TextEditor;
 
 use v5.32;
 use warnings;
 use experimental 'signatures';  # stable since v5.36
 
 use autodie;
-use RevBank::Global;
+use SpaceTab::Global;
 use Fcntl qw(:flock);
 use Carp qw(croak);
 use Time::HiRes qw(sleep);

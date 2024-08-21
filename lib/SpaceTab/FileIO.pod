@@ -1,6 +1,6 @@
 =head1 NAME
 
-RevBank::FileIO - Line-based text file manipulation with advisory locking
+SpaceTab::FileIO - Line-based text file manipulation with advisory locking
 
 =head1 SYNOPSIS
 
@@ -21,7 +21,7 @@ RevBank::FileIO - Line-based text file manipulation with advisory locking
 =head1 DESCRIPTION
 
 This package implements very simple locking to protect against filesystem
-based race conditions when running multiple instances of revbank on the same
+based race conditions when running multiple instances of SpaceTab on the same
 data files.
 
 These race conditions are probably exceptionally rare and very hard to trigger
@@ -86,7 +86,7 @@ return undef to essentially skip (remove) a line.
 =item * A lock file is used, so external processes should not depend on the
 individual files being flocked.
 
-=item * Using a text editor while revbank is running and changing files will
+=item * Using a text editor while SpaceTab is running and changing files will
 still mess things up.
 
 =item * The locking mechanism provides a lock per process; different parts

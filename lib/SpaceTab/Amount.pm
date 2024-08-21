@@ -1,4 +1,4 @@
-package RevBank::Amount;
+package SpaceTab::Amount;
 
 use v5.32;
 use warnings;
@@ -19,7 +19,7 @@ sub _coerce {
 
             my $old = $_;
 
-            $_ = RevBank::Amount->parse_string("$_");
+            $_ = SpaceTab::Amount->parse_string("$_");
             croak "Unsupported operation on $C with invalid amount '$old'"
                 if not defined;
         }

@@ -5,7 +5,7 @@ sub _set_title($title) {
 }
 
 sub hook_prompt($class, $cart, $prompt, @) {
-	_set_title($cart->size ? "*RevBank" : "RevBank");
+	_set_title($cart->size ? "*SpaceTab" : "SpaceTab");
 }
 
 END {

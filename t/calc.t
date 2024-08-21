@@ -4,7 +4,7 @@ use Test::More;
 use Test::Exception;
 use Test::Warnings ":all";
 
-BEGIN { use_ok('RevBank::Global'); }
+BEGIN { use_ok('SpaceTab::Global'); }
 
 # Invalid syntax
 is parse_amount(undef), undef;

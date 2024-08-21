@@ -2,7 +2,7 @@
 
 HELP1 "<productID>" => "Add a product to pending transaction";
 
-my $filename = 'revbank.products';
+my $filename = 'spacetab.products';
 my $default_contra = '+sales/products';
 
 sub read_products() {
@@ -25,7 +25,7 @@ sub read_products() {
             ^\s*$     # empty line, or only whitespace
         ]x;
 
-        my @split = RevBank::Prompt::split_input($line);
+        my @split = SpaceTab::Prompt::split_input($line);
 
         if (not @split or ref $split[0] or grep /\0/, @split) {
             warn "Invalid value in $filename line $linenr.\n";

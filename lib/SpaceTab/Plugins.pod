@@ -1,32 +1,32 @@
 =head1 NAME
 
-RevBank::Plugins - Plugin mechanism for RevBank
+SpaceTab::Plugins - Plugin mechanism for SpaceTab
 
 =head1 DESCRIPTION
 
-RevBank itself consists of a simple command line interface and a really brain
+SpaceTab itself consists of a simple command line interface and a really brain
 dead shopping cart. All transactions, even deposits and withdrawals, are
 handled by plugins.
 
-Plugins are defined in the C<revbank.plugins> file. Each plugin is a Perl
+Plugins are defined in the C<spacetab.plugins> file. Each plugin is a Perl
 source file in the C<plugins> directory. Plugins are always iterated over in
 the order they were defined in.
 
 =head2 Methods
 
-=head3 RevBank::Plugins::load
+=head3 SpaceTab::Plugins::load
 
-Reads the C<revbank.plugins> file and load the plugins.
+Reads the C<spacetab.plugins> file and load the plugins.
 
-=head3 RevBank::Plugins->new
+=head3 SpaceTab::Plugins->new
 
 Returns a B<list> of fresh plugin instances.
 
-=head3 RevBank::Plugins::register($package)
+=head3 SpaceTab::Plugins::register($package)
 
 Registers a plugin.
 
-=head3 RevBank::Plugins::call_hooks($hook, @arguments)
+=head3 SpaceTab::Plugins::call_hooks($hook, @arguments)
 
 Calls the given hook in each of the plugins. Non-standard hooks, called only
 by plugins, SHOULD be prefixed with the name of the plugin, and an underscore.
@@ -57,7 +57,7 @@ define one C<command> input method, and can have any number of hooks.
 
 =head2 Input methods
 
-Whenever a command is given in the 'outer' loop of revbank, the C<command>
+Whenever a command is given in the 'outer' loop of spacetab, the C<command>
 method of the plugins is called until one of the plugins returns either
 C<ACCEPT> or C<DONE>. An input method receives three arguments: the plugin
 object, the shopping cart, and the given input string. The plugin object
@@ -71,7 +71,7 @@ A command method MUST return with one of the following statements:
 
 =item return NEXT;
 
-The plugin declines handling of the given command, and revbank should proceed
+The plugin declines handling of the given command, and spacetab should proceed
 with the next one.
 
 Input methods other than C<command> MUST NOT return C<NEXT>.
@@ -79,7 +79,7 @@ Input methods other than C<command> MUST NOT return C<NEXT>.
 =item return REJECT, "Reason";
 
 The plugin decides that the input should be rejected for the given reason.
-RevBank will either query the user again, or (if there is any remaining input
+SpaceTab will either query the user again, or (if there is any remaining input
 in the buffer) abort the transaction to avoid confusion.
 
 =item return ABORT, "Reason";
@@ -192,9 +192,9 @@ Called when a user account is updated.
 =back
 
 Default messages can be silenced by overriding the hooks in
-C<RevBank::Messages>. Such a hack might look like:
+C<SpaceTab::Messages>. Such a hack might look like:
 
-    undef &RevBank::Messages::hook_abort;
+    undef &SpaceTab::Messages::hook_abort;
 
     sub hook_abort($class, $cart, @) {
         print "This message is much better!\n"
@@ -202,7 +202,7 @@ C<RevBank::Messages>. Such a hack might look like:
 
 =head2 Utility functions
 
-Several global utility functions are available. See L<RevBank::Global>
+Several global utility functions are available. See L<SpaceTab::Global>
 
 =head1 AUTHOR
 

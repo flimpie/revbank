@@ -27,7 +27,7 @@ sub arg :Tab(USERS) ($self, $cart, $arg, @) {
 
     if (@$users and $arg eq $self->{split_finish}) {
         my $amount = $self->{split_amount};
-        my $each  = RevBank::Amount->new_from_float($amount->float / (@$users + 1));
+        my $each  = SpaceTab::Amount->new_from_float($amount->float / (@$users + 1));
         my $total = @$users * $each;
         my $desc = join " + ", map $_->{description}, _select_split($cart);
 
@@ -44,7 +44,7 @@ sub arg :Tab(USERS) ($self, $cart, $arg, @) {
     my $user = parse_user($arg) or return REJECT, "$arg: No such user.";
     push @$users, $user;
 
-    my $each = RevBank::Amount->new_from_float($self->{split_amount}->float / (@$users + 1));
+    my $each = SpaceTab::Amount->new_from_float($self->{split_amount}->float / (@$users + 1));
     $self->{split_finish} = $each->string;
 
     return "User to take from (not yourself) or $self->{split_finish} to finish", \&arg;

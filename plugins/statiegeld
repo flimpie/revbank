@@ -9,7 +9,7 @@ our $S = ($ENV{REVBANK_STATIEGELD} // 0) == 1;
 sub statiegeld_product($product) {
 	if (not ref $product) {
 		# $product is a product id string; look up in product list
-		my $products = RevBank::Plugin::products::read_products();
+		my $products = SpaceTab::Plugin::products::read_products();
 		$product = $products->{$product} or return;
 	}
 
@@ -56,7 +56,7 @@ sub command { # args via @_ for mutable alias
 		return NEXT;
 	}
 
-	defined &RevBank::Plugin::products::read_products
+	defined &SpaceTab::Plugin::products::read_products
 		or die "statiegeld plugin requires products plugin";
 
 	$command =~ /^\+/ and return NEXT;
@@ -100,11 +100,11 @@ sub hook_added_entry ($class, $cart, $entry, @) {
 	}
 	if ($entry->attribute('plugin') eq 'products') {
 		my $id = $class->id;
-		die "Configuration error: the '$id' plugin must be *before* the 'products' plugin in revbank.plugins.\n";
+		die "Configuration error: the '$id' plugin must be *before* the 'products' plugin in spacetab.plugins.\n";
 	}
 }
 
-# Override main revbank prompt
+# Override main spacetab prompt
 sub hook_prompt {  # ($class, $cart, $prompt), but via @_ for mutable alias
 	$S or return;
 

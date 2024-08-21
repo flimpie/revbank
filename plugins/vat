@@ -1,6 +1,6 @@
 sub _read_vat {
 	my %vat;
-	for my $line (slurp "revbank.vat") {
+	for my $line (slurp "spacetab.vat") {
 		my ($match, $vataccount, $pct) = split " ", $line;
 		$vat{lc $match} = { user => $vataccount, pct => $pct };
 	}
@@ -14,12 +14,12 @@ sub hook_checkout_prepare($class, $cart, $username, $transaction_id, @) {
 		for my $contra ($entry->contras) {
 			my $vat = $config->{ lc $contra->{user} } or next;
 
-			my $amount = RevBank::Amount->new(
+			my $amount = SpaceTab::Amount->new(
 				$contra->{amount}->cents * $vat->{pct} / (100 + $vat->{pct})
 			);
 
 			my $desc = "VAT ($vat->{pct}% * $contra->{amount})";
-			my $display = RevBank::Users::is_hidden($contra->{user}) ? undef : $desc;
+			my $display = SpaceTab::Users::is_hidden($contra->{user}) ? undef : $desc;
 			$entry->add_contra($contra->{user}, -$amount, $desc, $display);
 			$entry->add_contra($vat->{user},    +$amount, $desc);
 		}

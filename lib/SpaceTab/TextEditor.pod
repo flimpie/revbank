@@ -1,11 +1,11 @@
 =head1 NAME
 
-RevBank::TextEditor - Basic Lightweight User-friendly TextEditor
+SpaceTab::TextEditor - Basic Lightweight User-friendly TextEditor
 
 =head1 SYNOPSIS
 
-	require RevBank::TextEditor;
-	RevBank::TextEditor::edit($filename);
+	require SpaceTab::TextEditor;
+	SpaceTab::TextEditor::edit($filename);
 
 =head1 DESCRIPTION
 

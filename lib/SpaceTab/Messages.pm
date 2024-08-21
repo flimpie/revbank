@@ -1,18 +1,18 @@
-package RevBank::Messages;
+package SpaceTab::Messages;
 
 use v5.32;
 use warnings;
 use experimental 'signatures';  # stable since v5.36
 
-use RevBank::Global;
-use base 'RevBank::Plugin';
+use SpaceTab::Global;
+use base 'SpaceTab::Plugin';
 
 # Don't edit this file just to change the messages. Instead, RTFM and define
 # your own hooks.
 
 BEGIN {
-    RevBank::Plugins::register("RevBank::Messages");
-    *hidden = \&RevBank::Users::is_hidden;
+    SpaceTab::Plugins::register("SpaceTab::Messages");
+    *hidden = \&SpaceTab::Users::is_hidden;
 }
 
 
@@ -20,7 +20,7 @@ sub command { return NEXT; }
 sub id { 'built in messages' }
 
 sub hook_startup {
-    say "\e[0m\n\n\nWelcome to the RevBank Shell, version $::VERSION\n";
+    say "\e[0m\n\n\nWelcome to the SpaceTab Shell, version $::VERSION\n";
 }
 
 sub hook_plugin_fail($class, $plugin, $error, @) {
@@ -59,7 +59,7 @@ sub hook_reject($class, $plugin, $reason, $abort, @) {
 }
 
 sub hook_user_balance($class, $username, $old, $delta, $new, @) {
-    return if hidden $username and not $ENV{REVBANK_DEBUG};
+    return if hidden $username and not $ENV{SPACETAB_DEBUG};
 
     my $sign = $delta->cents >= 0 ? '+' : '-';
     my $rood = $new->cents < 0 ? '31;' : '';
@@ -71,7 +71,7 @@ sub hook_user_balance($class, $username, $old, $delta, $new, @) {
 }
 
 sub hook_user_created($class, $username, @) {
-    return if hidden $username and not $ENV{REVBANK_DEBUG};
+    return if hidden $username and not $ENV{SPACETAB_DEBUG};
 
     say "New account '$username' created.";
 }

@@ -12,10 +12,10 @@ sub _box(@lines) {
 
 sub hook_checkout_done($class, $cart, $user, $transaction_id, @) {
     defined $user or return;  # hacks like 'undo' don't have an acting user
-    RevBank::Users::is_hidden($user) and return;
+    SpaceTab::Users::is_hidden($user) and return;
 
-    my $balance = RevBank::Users::balance($user) or return;
-    my $since   = RevBank::Users::since($user);
+    my $balance = SpaceTab::Users::balance($user) or return;
+    my $since   = SpaceTab::Users::since($user);
 
     if ($balance < -22.00) {
         _box(

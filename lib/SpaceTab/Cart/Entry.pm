@@ -1,11 +1,11 @@
-package RevBank::Cart::Entry;
+package SpaceTab::Cart::Entry;
 
 use v5.32;
 use warnings;
 use experimental 'signatures';  # stable since v5.36
 
 use Carp qw(carp croak);
-use RevBank::Users;
+use SpaceTab::Users;
 use List::Util ();
 use Scalar::Util ();
 
@@ -17,7 +17,7 @@ sub _arg_provided($a) {
 }
 
 sub new($class, $amount, $description, $attributes = {}) {
-    $amount = RevBank::Amount->parse_string($amount) if not ref $amount;
+    $amount = SpaceTab::Amount->parse_string($amount) if not ref $amount;
 
     my $self = {
         quantity    => 1,
@@ -26,7 +26,7 @@ sub new($class, $amount, $description, $attributes = {}) {
         attributes  => { %$attributes },
         user        => undef,
         contras     => [],
-        caller      => List::Util::first(sub { !/^RevBank::Cart/ }, map { (caller $_)[3] } 1..10)
+        caller      => List::Util::first(sub { !/^SpaceTab::Cart/ }, map { (caller $_)[3] } 1..10)
                        || (caller 1)[3],
         highlight   => 1,
     };
@@ -38,8 +38,8 @@ sub add_contra($self, $user, $amount, $description, $display = undef) {
     # $display should be given for either ALL or NONE of the contras,
     # with the exception of contras with $amount == 0.00;
 
-    $amount = RevBank::Amount->parse_string($amount) if not ref $amount;
-    $user = RevBank::Users::assert_user($user);
+    $amount = SpaceTab::Amount->parse_string($amount) if not ref $amount;
+    $user = SpaceTab::Users::assert_user($user);
 
     $description =~ s/\$you/$self->{user}/g if defined $self->{user};
 
@@ -72,7 +72,7 @@ sub attribute($self, $key, $new = $NONE) {
 sub amount($self, $new = undef) {
     my $ref = \$self->{amount};
     if (defined $new) {
-        $new = RevBank::Amount->parse_string($new) if not ref $new;
+        $new = SpaceTab::Amount->parse_string($new) if not ref $new;
         $$ref = $new;
         $self->attribute('changed', 1);
         $self->{highlight_amount} = 1;
@@ -133,19 +133,19 @@ sub as_printable($self) {
     for my $c (@{ $self->{contras} }) {
         my $description;
         my $amount = $self->{amount};
-        my $hidden = RevBank::Users::is_hidden($c->{user});
+        my $hidden = SpaceTab::Users::is_hidden($c->{user});
         my $fromto = $c->{amount}->cents < 0 ? "<-" : "->";
         $fromto .= " $c->{user}";
 
         if ($c->{display}) {
             $description =
                 $hidden
-                ? ($ENV{REVBANK_DEBUG} ? "($fromto:) $c->{display}" : $c->{display})
+                ? ($ENV{SPACETAB_DEBUG} ? "($fromto:) $c->{display}" : $c->{display})
                 : "$fromto: $c->{display}";
 
             $amount *= -1;
         } elsif ($hidden) {
-            next unless $ENV{REVBANK_DEBUG};
+            next unless $ENV{SPACETAB_DEBUG};
             $description = "($fromto: $c->{description})";
         } else {
             $description = $fromto;
@@ -204,19 +204,19 @@ sub user($self, $new = undef) {
 
 sub sanity_check($self) {
     # Turnover and journals were implicit contras in previous versions of
-    # revbank, but old plugins may need upgrading to the new dual-entry system,
+    # spacetab, but old plugins may need upgrading to the new dual-entry system,
     # so (for now) a zero sum is not required.
 
     my @contras = $self->contras;
 
-    my $sum = RevBank::Amount->new(
+    my $sum = SpaceTab::Amount->new(
         List::Util::sum(map $_->{amount}->cents, $self, @contras)
     );
 
     # Although unbalanced transactiens are still allowed, a transaction with
     # contras should at least not try to issue money that does not exist.
     if ($sum > 0 and @contras and not $self->{FORCE_UNBALANCED}) {
-        local $ENV{REVBANK_DEBUG} = 1;
+        local $ENV{SPACETAB_DEBUG} = 1;
         my $message = join("\n",
             "BUG! (probably in $self->{caller})",
             "This adds up to creating money that does not exist:",
@@ -228,24 +228,24 @@ sub sanity_check($self) {
             ),
             "Cowardly refusing to create $sum out of thin air"
         );
-        RevBank::Plugins::call_hooks("log_error", "UNBALANCED ENTRY $message");
+        SpaceTab::Plugins::call_hooks("log_error", "UNBALANCED ENTRY $message");
         croak $message;
     }
 
     if ($sum != 0) {
-        local $ENV{REVBANK_DEBUG} = 1;
+        local $ENV{SPACETAB_DEBUG} = 1;
         my $forced = $self->{FORCE_UNBALANCED} ? " (FORCED)" : "";
-        RevBank::Plugins::call_hooks(
+        SpaceTab::Plugins::call_hooks(
             "log_warning",
             "UNBALANCED ENTRY$forced in $self->{caller}: " . (
                 @contras
                 ? "sum of entry with contras ($sum) != 0.00"
                 : "transaction has no contras"
-            ) . ". This will be a fatal error in a future version of revbank.\n"
+            ) . ". This will be a fatal error in a future version of SpaceTab.\n"
             . "The unbalanced entry is:\n" . join("\n", $self->as_printable)
         );
 
-        warn "$self->{caller} has created an unbalanced entry, which is deprecated. Support for unbalanced entries will be removed in a future version of RevBank.\n";
+        warn "$self->{caller} has created an unbalanced entry, which is deprecated. Support for unbalanced entries will be removed in a future version of SpaceTab.\n";
     }
 
     return 1;

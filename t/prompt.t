@@ -6,22 +6,22 @@ use Test::Warnings ":all";
 
 use experimental 'signatures';
 
-BEGIN { use_ok('RevBank::Prompt'); }
+BEGIN { use_ok('SpaceTab::Prompt'); }
 
 sub are($input, $expected) {
 	if (ref($expected) eq 'ARRAY') {
-		my @got = RevBank::Prompt::split_input($input);
+		my @got = SpaceTab::Prompt::split_input($input);
 		is_deeply(\@got, $expected, ">$input<");
 
-		my $reconstructed = join " ", map RevBank::Prompt::reconstruct($_), @got;
-		my @got2 = RevBank::Prompt::split_input($reconstructed);
+		my $reconstructed = join " ", map SpaceTab::Prompt::reconstruct($_), @got;
+		my @got2 = SpaceTab::Prompt::split_input($reconstructed);
 		is_deeply(\@got, \@got2, ">$input< round-trips once");
 
-		my $reconstructed2 = join " ", map RevBank::Prompt::reconstruct($_), @got2;
-		my @got3 = RevBank::Prompt::split_input($reconstructed2);
+		my $reconstructed2 = join " ", map SpaceTab::Prompt::reconstruct($_), @got2;
+		my @got3 = SpaceTab::Prompt::split_input($reconstructed2);
 		is_deeply(\@got, \@got3, ">$input< round-trips twice");
 	} else {
-		my @got = RevBank::Prompt::split_input($input);
+		my @got = SpaceTab::Prompt::split_input($input);
 		is(scalar @got, 1, "Invalid input >$input< returns 1 element");
 		is(${ $got[0] }, $expected, "Invalid input >$input< fails at $expected");
 	}

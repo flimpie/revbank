@@ -1,4 +1,4 @@
-# Order matters. Read SpaceTab::Plugins for documentation.
+# Order matters. Read RevBank::Plugins for documentation.
 
 log        # first, so that the registrations of other plugins are logged
 
@@ -52,3 +52,5 @@ users              # matches usernames
 regex_gtin         # matches GTINs in URLs and element strings
 url                # matches other URLs
 #deprecated_raw     # matches amounts
+
+exit

@@ -1,4 +1,4 @@
-package RevBank::Eval;
+package SpaceTab::Eval;
 
 # This function is used so strings can be eval'ed in a clean lexical
 # environment.

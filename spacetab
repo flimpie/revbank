@@ -11,11 +11,11 @@ use POSIX qw(ttyname);
 
 use FindBin qw($RealBin);
 use lib "$RealBin/lib";
-use RevBank::Plugins;
-use RevBank::Global;
-use RevBank::Messages;
-use RevBank::Cart;
-use RevBank::Prompt;
+use SpaceTab::Plugins;
+use SpaceTab::Global;
+use SpaceTab::Messages;
+use SpaceTab::Cart;
+use SpaceTab::Prompt;
 
 our $VERSION = "6.2.0";
 our %HELP1 = (
@@ -32,7 +32,7 @@ if (@ARGV) {
 
     $one_off = 1;
 
-    @words = RevBank::Prompt::split_input($ARGV[1]);
+    @words = SpaceTab::Prompt::split_input($ARGV[1]);
     @words and not ref $words[0] or die "Syntax error.\n";
     push @words, @ARGV[3 .. $#ARGV] if @ARGV > 3;
     push @words, "help" if not @words;
@@ -44,9 +44,9 @@ if (@ARGV) {
 
 $| = 1;
 
-my $cart = RevBank::Cart->new;
+my $cart = SpaceTab::Cart->new;
 
-RevBank::Plugins->load;
+SpaceTab::Plugins->load;
 
 call_hooks("startup");
 
@@ -60,7 +60,7 @@ OUTER: for (;;) {
     }
 
     my $prompt = "";
-    my @plugins = RevBank::Plugins->new;
+    my @plugins = SpaceTab::Plugins->new;
     my $method = "command";
 
     sub abort {
@@ -69,7 +69,7 @@ OUTER: for (;;) {
         @retry = ();
         call_hooks "abort", $cart, \@_;
         $cart->empty;
-        RevBank::FileIO::release_all_locks;
+        SpaceTab::FileIO::release_all_locks;
         { no warnings; redo OUTER; }
     }
 
@@ -100,7 +100,7 @@ OUTER: for (;;) {
 
                 if ($word_based) {
                     for (@accepted, @rejected, @trailing) {
-                        $_ = RevBank::Prompt::reconstruct($_);
+                        $_ = SpaceTab::Prompt::reconstruct($_);
                     }
                 }
 
@@ -112,7 +112,7 @@ OUTER: for (;;) {
                 $retry = 0;
             }
 
-            my $input = RevBank::Prompt::prompt(
+            my $input = SpaceTab::Prompt::prompt(
                 $prompt, \@completions, $default, $pos, $cart, \@plugins
             );
             if (not defined $input) {
@@ -124,7 +124,7 @@ OUTER: for (;;) {
             length $input or redo PROMPT;
 
             if ($split_input) {
-                @words = RevBank::Prompt::split_input($input);
+                @words = SpaceTab::Prompt::split_input($input);
                 if (ref $words[0]) {
                     my $pos = ${ $words[0] };
 
@@ -180,7 +180,7 @@ OUTER: for (;;) {
                     ? (REJECT, "Unexpected control character in input.")
                     : eval { $plugin->$method($cart, $word) };
 
-                if ($@ isa 'RevBank::Cart::CheckoutProhibited') {
+                if ($@ isa 'SpaceTab::Cart::CheckoutProhibited') {
                     @words or die "Internal inconsistency";  # other cause than trailing input
 
                     push @retry, shift @words;  # reject next word (first of trailing)
@@ -188,7 +188,7 @@ OUTER: for (;;) {
                     @words = ();
                     $retry = $@->reason;
                     redo OUTER;
-                } elsif ($@ isa 'RevBank::Exception::RejectInput') {
+                } elsif ($@ isa 'SpaceTab::Exception::RejectInput') {
                     $rv = REJECT;
                     @rvargs = $@->reason;
                 } elsif ($@) {
@@ -276,7 +276,7 @@ OUTER: for (;;) {
 
 =head1 NAME
 
-revbank - Banking for hackerspace visitors
+spacetab - Banking for hackerspace visitors
 
 =head1 DESCRIPTION
 
@@ -288,7 +288,7 @@ line (space separated), but that's an unintended feature...
 
 =head1 PLUGINS
 
-Refer to L<RevBank::Plugins> for documentation about writing plugins.
+Refer to L<SpaceTab::Plugins> for documentation about writing plugins.
 
 Plugins themselves may have some documentation in the respective plugin files.
 

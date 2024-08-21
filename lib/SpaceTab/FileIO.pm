@@ -1,4 +1,4 @@
-package RevBank::FileIO;
+package SpaceTab::FileIO;
 
 use v5.32;
 use warnings;
@@ -9,8 +9,8 @@ use Fcntl qw(:flock);
 use Carp qw(croak);
 use Time::HiRes qw(sleep);
 
-my $tempfn = ".revbank.$$";
-my $lockfn = ".revbank.global-lock";
+my $tempfn = ".spacetab.$$";
+my $lockfn = ".spacetab.global-lock";
 my $lockfh;
 my $lockcount = 0;
 
@@ -24,7 +24,7 @@ sub get_lock() {
 	open $lockfh, ">", $lockfn;
 	my $attempt = 1;
 
-	my $debug = !!$ENV{REVBANK_DEBUG};
+	my $debug = !!$ENV{SPACETAB_DEBUG};
 	FLOCK: {
 		if (flock $lockfh, LOCK_EX | LOCK_NB) {
 			syswrite $lockfh, $$;
@@ -32,7 +32,7 @@ sub get_lock() {
 		}
 
 		if (($attempt % 50) == 0 or $debug) {
-			warn "Another revbank instance has the global lock. Waiting for it to finish...\n"
+			warn "Another SpaceTab instance has the global lock. Waiting for it to finish...\n"
 		}
 		sleep .1;
 

@@ -2,12 +2,12 @@
 
 HELP "edit" => "Edit product list";
 
-my $filename = 'revbank.products';
+my $filename = 'spacetab.products';
 
 sub command :Tab(edit) ($self, $cart, $command, @) {
     $command eq 'edit' or return NEXT;
 
-    require RevBank::TextEditor;
-    RevBank::TextEditor::edit($filename);
+    require SpaceTab::TextEditor;
+    SpaceTab::TextEditor::edit($filename);
     return ACCEPT;
 }

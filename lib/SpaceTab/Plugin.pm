@@ -1,18 +1,18 @@
-package RevBank::Plugin;
+package SpaceTab::Plugin;
 
 use v5.32;
 use warnings;
 use experimental 'signatures';  # stable since v5.36
 use attributes;
 
-require RevBank::Global;
+require SpaceTab::Global;
 
 sub new($class) {
     return bless { }, $class;
 }
 
 sub command($self, $cart, $command, @) {
-    return RevBank::Global::NEXT();
+    return SpaceTab::Global::NEXT();
 }
 
 sub Tab($self, $method) {
@@ -33,8 +33,8 @@ sub Tab($self, $method) {
     }
 
     if (delete $completions{USERS}) {
-        for my $name (RevBank::Users::names()) {
-            next if RevBank::Users::is_hidden($name);
+        for my $name (SpaceTab::Users::names()) {
+            next if SpaceTab::Users::is_hidden($name);
 
             $completions{ $name }++;
             $completions{ $1 }++ if $name =~ /^\*(.*)/;
@@ -58,8 +58,8 @@ __END__
 
 =head1 NAME
 
-RevBank::Plugin - Base class for RevBank plugins
+SpaceTab::Plugin - Base class for RevBank plugins
 
 =head1 DESCRIPTION
 
-Documentation on writing plugins is at L<RevBank::Plugins>.
+Documentation on writing plugins is at L<SpaceTab::Plugins>.

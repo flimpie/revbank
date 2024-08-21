@@ -8,11 +8,11 @@ sub command :Tab(grandtotal) ($self, $cart, $command, @) {
     my $pos = 0;
     my $neg = 0;
 
-    for my $line (slurp 'revbank.accounts') {
+    for my $line (slurp 'spacetab.accounts') {
         my ($username, $balance) = split " ", $line;
-        next if RevBank::Users::is_special($username);
+        next if SpaceTab::Users::is_special($username);
 
-        my $credit = RevBank::Amount->parse_string($balance) or next;
+        my $credit = SpaceTab::Amount->parse_string($balance) or next;
         $neg += $credit if $credit < 0;
         $pos += $credit if $credit > 0;
     }

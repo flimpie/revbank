@@ -1,12 +1,12 @@
-package RevBank::Plugins;
+package SpaceTab::Plugins;
 
 use v5.32;
 use warnings;
 use experimental 'signatures';  # stable since v5.36
 
-use RevBank::Eval;
-use RevBank::Plugin;
-use RevBank::Global;
+use SpaceTab::Eval;
+use SpaceTab::Plugin;
+use SpaceTab::Global;
 use Exporter;
 our @EXPORT = qw(call_hooks load_plugins);
 
@@ -47,27 +47,27 @@ sub register(@new_plugins) {
 }
 
 sub load($class) {
-    my @config = _read_file('revbank.plugins');
+    my @config = _read_file('spacetab.plugins');
     chomp @config;
     s/#.*//g for @config;
     @config = map /(\S+)/, grep /\S/, @config;
 
     for my $name (@config) {
         my $fn = "plugins/$name";
-        my $package = "RevBank::Plugin::$name";
+        my $package = "SpaceTab::Plugin::$name";
         if (not -e $fn) {
             warn "$fn does not exist; skipping plugin.\n";
             next;
         }
-        RevBank::Eval::clean_eval(qq[
+        SpaceTab::Eval::clean_eval(qq[
             use strict;
             use warnings;
             use v5.32;
             use experimental 'signatures';
             use experimental 'isa';
             package $package;
-            BEGIN { RevBank::Global->import; }
-            our \@ISA = qw(RevBank::Plugin);
+            BEGIN { SpaceTab::Global->import; }
+            our \@ISA = qw(SpaceTab::Plugin);
             our \%ATTR;
             sub MODIFY_CODE_ATTRIBUTES(\$class, \$sub, \@attrs) {
                 \$ATTR{ \$sub } = "\@attrs";

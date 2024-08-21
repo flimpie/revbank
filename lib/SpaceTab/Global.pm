@@ -1,22 +1,22 @@
-package RevBank::Global;
+package SpaceTab::Global;
 
 use v5.32;
 use warnings;
 use experimental 'signatures';  # stable since v5.36
 
 use POSIX qw(strftime);
-use RevBank::Amount;
-use RevBank::FileIO;
+use SpaceTab::Amount;
+use SpaceTab::FileIO;
 
 {
-    package RevBank::Exception::RejectInput;
+    package SpaceTab::Exception::RejectInput;
     sub new($class, $reason) { return bless \$reason, $class; }
     sub reason($self) { return $$self; }
 }
 
 sub import {
-    require RevBank::Plugins;
-    require RevBank::Users;
+    require SpaceTab::Plugins;
+    require SpaceTab::Users;
     no strict 'refs';
     my $caller = caller;
     *{"$caller\::ACCEPT"}       = sub () { \1 };
@@ -25,12 +25,12 @@ sub import {
     *{"$caller\::NEXT"}         = sub () { \4 };
     *{"$caller\::DONE"}         = sub () { \5 };
     *{"$caller\::REDO"}         = sub () { \6 };
-    *{"$caller\::slurp"}        = \&RevBank::FileIO::slurp;
-    *{"$caller\::spurt"}        = \&RevBank::FileIO::spurt;
-    *{"$caller\::rewrite"}      = \&RevBank::FileIO::rewrite;
-    *{"$caller\::append"}       = \&RevBank::FileIO::append;
-    *{"$caller\::with_lock"}    = \&RevBank::FileIO::with_lock;
-    *{"$caller\::parse_user"}   = \&RevBank::Users::parse_user;
+    *{"$caller\::slurp"}        = \&SpaceTab::FileIO::slurp;
+    *{"$caller\::spurt"}        = \&SpaceTab::FileIO::spurt;
+    *{"$caller\::rewrite"}      = \&SpaceTab::FileIO::rewrite;
+    *{"$caller\::append"}       = \&SpaceTab::FileIO::append;
+    *{"$caller\::with_lock"}    = \&SpaceTab::FileIO::with_lock;
+    *{"$caller\::parse_user"}   = \&SpaceTab::Users::parse_user;
     *{"$caller\::parse_amount"} = sub ($amount) {
         defined $amount or return undef;
         length  $amount or return undef;
@@ -38,7 +38,7 @@ sub import {
         my @split = grep /\S/, split /([+-])/, $amount;
 
         my $posneg = 1;
-        $amount = RevBank::Amount->new(0);
+        $amount = SpaceTab::Amount->new(0);
         for my $token (@split) {
             if ($token eq '-') {
                 $posneg = $posneg == -1 ? 1 : -1;
@@ -46,7 +46,7 @@ sub import {
                 $posneg ||= 1;
             } else {
                 $posneg or return undef;  # two terms in a row
-                my $term = RevBank::Amount->parse_string($token) // return undef;
+                my $term = SpaceTab::Amount->parse_string($token) // return undef;
                 $amount += $posneg * $term;
                 $posneg = 0;
             }
@@ -54,18 +54,18 @@ sub import {
         $posneg and return undef;  # last token must be term
 
         if ($amount->cents < 0) {
-            die RevBank::Exception::RejectInput->new(
+            die SpaceTab::Exception::RejectInput->new(
                 "For our sanity, no negative amounts, please :)."
             );
         }
         if ($amount->cents > 99900) {
-            die RevBank::Exception::RejectInput->new(
+            die SpaceTab::Exception::RejectInput->new(
                 "That's way too much money."
             );
         }
         return $amount;
     };
-    *{"$caller\::call_hooks"} = \&RevBank::Plugins::call_hooks;
+    *{"$caller\::call_hooks"} = \&SpaceTab::Plugins::call_hooks;
     *{"$caller\::say"} = sub {
         print @_, "\n";
     };

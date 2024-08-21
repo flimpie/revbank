@@ -1,21 +1,21 @@
-package RevBank::Users;
+	package SpaceTab::Users;
 
 use v5.32;
 use warnings;
 use experimental 'signatures';  # stable since v5.36
 
-use RevBank::Global;
-use RevBank::Plugins;
+use SpaceTab::Global;
+use SpaceTab::Plugins;
 use Carp ();
 use List::Util ();
 
-my $filename = "revbank.accounts";
+my $filename = "spacetab.accounts";
 
 sub _read() {
     my @users;
     for my $line (slurp $filename) {
         $line =~ /\S/ or next;
-        # Not using RevBank::Prompt::split_input to keep parsing by external
+        # Not using SpaceTab::Prompt::split_input to keep parsing by external
         # scripts simple, since so many such scripts exist.
 
         my @split = split " ", $line;
@@ -51,7 +51,7 @@ sub names() {
 }
 
 sub balance($username) {
-    return RevBank::Amount->parse_string( _read()->{ lc $username }->[1] );
+    return SpaceTab::Amount->parse_string( _read()->{ lc $username }->[1] );
 }
 
 sub since($username) {
@@ -63,21 +63,21 @@ sub create($username) {
 
     my $now = now();
     append $filename, "$username 0.00 $now\n";
-    RevBank::Plugins::call_hooks("user_created", $username);
+    SpaceTab::Plugins::call_hooks("user_created", $username);
     return $username;
 }
 
 sub update($username, $delta, $transaction_id) {
     my $account = assert_user($username) or die "No such user ($username)";
 
-    my $old = RevBank::Amount->new(0);
-    my $new = RevBank::Amount->new(0);
+    my $old = SpaceTab::Amount->new(0);
+    my $new = SpaceTab::Amount->new(0);
 
     rewrite $filename, sub($line) {
         my @a = split " ", $line;
         if (lc $a[0] eq lc $account) {
-            $old = RevBank::Amount->parse_string($a[1]);
-            die "Fatal error: invalid balance in revbank:accounts:$.\n"
+            $old = SpaceTab::Amount->parse_string($a[1]);
+            die "Fatal error: invalid balance in spacetab.accounts:$.\n"
                 if not defined $old;
 
             $new = $old + $delta;
@@ -98,7 +98,7 @@ sub update($username, $delta, $transaction_id) {
         }
     };
 
-    RevBank::Plugins::call_hooks(
+    SpaceTab::Plugins::call_hooks(
         "user_balance", $account, $old, $delta, $new, $transaction_id
     );
 }

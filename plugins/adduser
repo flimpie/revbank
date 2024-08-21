@@ -27,14 +27,14 @@ sub username($self, $cart, $name, @) {
     return REJECT, "That name is not available."
         if defined parse_user($name, 1);
 
-    for my $plugin (RevBank::Plugins->new) {
+    for my $plugin (SpaceTab::Plugins->new) {
         my $id = $plugin->id;
 
         return REJECT, "That name would clash with the '$id' plugin."
             if any sub { $_ eq $name }, $plugin->Tab('command');
     }
 
-    RevBank::Users::create( $name );
+    SpaceTab::Users::create( $name );
 
     return ACCEPT;
 }

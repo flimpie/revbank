@@ -7,7 +7,7 @@
     # implementation for the 'cash' command.
 
     # If you use the 'cash' plugin, make sure it is loaded *before*
-    # the 'stock' plugin in 'revbank.plugins'.
+    # the 'stock' plugin in 'spacetab.plugins'.
 
     HELP1 "cash" => "Checkout without a user account";
 
@@ -23,9 +23,9 @@
 
 sub hook_checkout($class, $cart, $user, $transaction_id, @) {
     # Hack42 for some reason used the dutch word in their revbank1 hack.
-    my $filename = -e("revbank.voorraad")
-        ? "revbank.voorraad"
-        : "revbank.stock";
+    my $filename = -e("spacetab.voorraad")
+        ? "spacetab.voorraad"
+        : "spacetab.stock";
 
     my @entries = $cart->entries('product_id') or return;
 
