@@ -4,6 +4,25 @@
 2. Make a backup of your RevBank data and code repo(s).
 3. Read this file :)
 
+# (2024-08-21) SpaceTab fork, RevBank 6.2.0 -> SpaceTab 6.3.0
+
+Hard fork has occured here. Compatibility between upstream RevBank and
+SpaceTab is not guaranteed from here.
+
+The most relevant change is that configuration files have been moved, so
+the following should work:
+
+```
+mkdir data/
+mv revbank.accounts data/accounts
+mv revbank.market data/market
+mv revbank.plugins data/plugins
+mv revbank.products data/products
+```
+
+The `data/` folder is not tracked in this repository. You could put it in
+a separate version control thingie if you so wish.
+
 # (2024-01-20) RevBank 6.0.0
 
 Note that the changes to `revbank.products` do NOT apply to `revbank.market`
