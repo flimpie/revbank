@@ -1,0 +1,8 @@
+#!perl
+
+HELP1 "exit" => "Exit SpaceTab.";
+
+sub command :Tab(exit) ($self, $cart, $command, @) {
+    $command eq 'exit' or return NEXT;
+    exit 0;
+}
