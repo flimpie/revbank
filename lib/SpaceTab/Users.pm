@@ -9,7 +9,7 @@ use SpaceTab::Plugins;
 use Carp ();
 use List::Util ();
 
-my $filename = "spacetab.accounts";
+my $filename = "data/accounts";
 
 sub _read() {
     my @users;

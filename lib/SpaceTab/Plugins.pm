@@ -47,7 +47,7 @@ sub register(@new_plugins) {
 }
 
 sub load($class) {
-    my @config = _read_file('spacetab.plugins');
+    my @config = _read_file('data/plugins');
     chomp @config;
     s/#.*//g for @config;
     @config = map /(\S+)/, grep /\S/, @config;

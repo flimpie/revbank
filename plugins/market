@@ -2,7 +2,7 @@
 
 HELP "market" => "Edit market list";
 
-my $filename = 'spacetab.market';
+my $filename = 'data/market';
 
 sub _read_market() {
     my %market;

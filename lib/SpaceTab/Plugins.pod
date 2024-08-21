@@ -8,7 +8,7 @@ SpaceTab itself consists of a simple command line interface and a really brain
 dead shopping cart. All transactions, even deposits and withdrawals, are
 handled by plugins.
 
-Plugins are defined in the C<spacetab.plugins> file. Each plugin is a Perl
+Plugins are defined in the C<data/plugins> file. Each plugin is a Perl
 source file in the C<plugins> directory. Plugins are always iterated over in
 the order they were defined in.
 
@@ -16,7 +16,7 @@ the order they were defined in.
 
 =head3 SpaceTab::Plugins::load
 
-Reads the C<spacetab.plugins> file and load the plugins.
+Reads the C<data/plugins> file and load the plugins.
 
 =head3 SpaceTab::Plugins->new
 

@@ -9,3 +9,4 @@ spacetab.products
 .spacetab.nextid
 
 plugins/overlay/*
+data/*

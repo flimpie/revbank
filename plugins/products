@@ -2,7 +2,7 @@
 
 HELP1 "<productID>" => "Add a product to pending transaction";
 
-my $filename = 'spacetab.products';
+my $filename = 'data/products';
 my $default_contra = '+sales/products';
 
 sub read_products() {
