@@ -31,15 +31,13 @@ sub hook_checkout($class, $cart, $user, $transaction_id, @) {
 }
 
 sub list($self) {
-    require SpaceTab::TextEditor;
-
-    my $list = join "", sort {
-        lc($a) cmp lc($b)
-    } grep {
-        !/^[-+]/
+    my $list = join "", grep {
+	/ -/ && !/^[-+]/
     } slurp("spacetab.accounts");
 
-    SpaceTab::TextEditor::pager("SpaceTab account list", $list);
+    $list =~ s/( -[\\d.]+)/\\e[31;1m\$1\\e[0m/g;
+    print $list;
+
     return ACCEPT;
 }
 
@@ -85,8 +83,8 @@ sub log_for :Tab(USERS) ($self, $cart, $input, @) {
     my $user = parse_user($input) or return REJECT, "Unknown user";
     my @lines = _grep($user);
 
-    require SpaceTab::TextEditor;
-    SpaceTab::TextEditor::logpager("SpaceTab log for $user", join("", @lines, "(end)"));
+    print "RevBank log for $user:\n\n";
+    print join("", @lines, "(end)");
     return ACCEPT;
 }
 

@@ -7,7 +7,6 @@ my $filename = 'spacetab.products';
 sub command :Tab(edit) ($self, $cart, $command, @) {
     $command eq 'edit' or return NEXT;
 
-    require SpaceTab::TextEditor;
-    SpaceTab::TextEditor::edit($filename);
+    system $ENV{EDITOR} || 'vi', $filename;
     return ACCEPT;
 }

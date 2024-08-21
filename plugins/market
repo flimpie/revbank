@@ -23,8 +23,7 @@ sub _read_market() {
 
 sub command :Tab(market,&tab) ($self, $cart, $command, @) {
     if ($command eq 'market') {
-        require SpaceTab::TextEditor;
-        SpaceTab::TextEditor::edit($filename);
+        system $ENV{EDITOR} || 'vi', $filename;
         return ACCEPT;
     }
 

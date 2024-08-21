@@ -119,7 +119,6 @@ describe the inner workings in more detail:
 - [RevBank::FileIO](lib/RevBank/FileIO.pod) - reading and writing files
 - [RevBank::Global](lib/RevBank/Global.pod) - constants and utility functions
 - [RevBank::Plugins](lib/RevBank/Plugins.pod) - writing plugins
-- [RevBank::TextEditor](lib/RevBank/TextEditor.pod) - internal pager and editor
 - [RevBank::Users](lib/RevBank/Users.pod) - user accounts and special accounts
 
 The plugins are mostly undocumented, but some have useful hints in the source
