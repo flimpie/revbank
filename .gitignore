@@ -2,3 +2,7 @@
 .spacetab.undo
 spacetab.stock
 spacetab.plugins
+spacetab.accounts
+spacetab.market
+spacetab.products
+.spacetab.global-lock
