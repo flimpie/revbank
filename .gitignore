@@ -6,5 +6,6 @@ spacetab.accounts
 spacetab.market
 spacetab.products
 .spacetab.global-lock
+.spacetab.nextid
 
 plugins/overlay/*
